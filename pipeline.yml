@@ -1,0 +1,24 @@
+trigger: 
+  - main
+  - feature*
+
+variables:
+- name: AZSUBSCRIPTION  
+  value: AZDOManaged
+stages:
+- stage: AppBuild 
+  condition: always()
+  jobs:
+  - job: BuildWar    
+    workspace:
+      clean: all
+    pool:
+      name: CloudopsPool
+    steps:    
+    - task: Bash@3
+      inputs:
+        targetType: 'filePath'
+        filePath: deployscripts/buildJob.sh
+      env:
+        buildNumber: $(Build.BuildNumber)
+        buildDir: $(Pipeline.Workspace)
