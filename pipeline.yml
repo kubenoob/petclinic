@@ -42,25 +42,24 @@ stages:
           name: CloudOpsDev
           resourceType: VirtualMachine
         strategy:
-            rolling:
-              maxParallel: 2  #for percentages, mention as x%
-              preDeploy:
-                steps:
-                - download: current
-                  artifact: petclinic
-                - script: echo initialize, cleanup, backup, install certs
-              deploy:
-                steps:
-                - task: Bash@3
-                  inputs:
-                    targetType: 'inline'
-                    script: |
-                      echo "Pipeline workspace is $(Pipeline.Workspace)"                    
-                      echo "Artifacts directlry is $(System.ArtifactsDirectory)"
-                      ls -l $(System.ArtifactsDirectory)
-                      echo "Current dir is $(pwd)"
-                      ls -l 
-                      # Modify deployment script based on the app type
-                      echo "Starting deployment script run"
-                      sudo cp '$(Pipeline.Workspace)/petclinic/**/target/*.war /opt/tomcat/webapps/petclinic.war 
+          runOnce:            
+            preDeploy:
+              steps:
+              - download: current
+                artifact: petclinic
+              - script: echo initialize, cleanup, backup, install certs
+            deploy:
+              steps:
+              - task: Bash@3
+                inputs:
+                  targetType: 'inline'
+                  script: |
+                    echo "Pipeline workspace is $(Pipeline.Workspace)"                    
+                    echo "Artifacts directlry is $(System.ArtifactsDirectory)"
+                    ls -l $(System.ArtifactsDirectory)
+                    echo "Current dir is $(pwd)"
+                    ls -l 
+                    # Modify deployment script based on the app type
+                    echo "Starting deployment script run"
+                    sudo cp '$(Pipeline.Workspace)/petclinic/**/target/*.war /opt/tomcat/webapps/petclinic.war 
 
