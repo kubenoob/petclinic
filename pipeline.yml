@@ -3,22 +3,54 @@ trigger:
   - feature*
 
 variables:
-- name: AZSUBSCRIPTION  
-  value: AZDOManaged
+  - name: AZSUBSCRIPTION  
+    value: AZDOManaged
 stages:
-- stage: AppBuild 
-  condition: always()
-  jobs:
-  - job: BuildWar    
-    workspace:
-      clean: all
+  - stage: AppBuild 
+    condition: always()
+    jobs:
+    - job: BuildWar    
+      workspace:
+        clean: all
+      pool:
+        name: CloudopsPool
+      steps:    
+      - task: Bash@3
+        inputs:
+          targetType: 'filePath'
+          filePath: deployscripts/buildJob.sh
+        env:
+          buildNumber: $(Build.BuildNumber)
+          buildDir: $(Pipeline.Workspace) 
+      - task: PublishPipelineArtifact@1
+        displayName: 'Publish Pipeline Artifact'
+        inputs:
+          targetPath: '$(Pipeline.Workspace)/s/target/petclinic.war '
+          artifact: 'petclinic_$(Build.BuildNumber).war'
+    
+  - stage: deployToDev
     pool:
-      name: CloudopsPool
-    steps:    
-    - task: Bash@3
-      inputs:
-        targetType: 'filePath'
-        filePath: deployscripts/buildJob.sh
-      env:
-        buildNumber: $(Build.BuildNumber)
-        buildDir: $(Pipeline.Workspace)
+      name: CloudopsPool      
+    condition: succeeded()
+    jobs:
+      - download: current  # refers to artifacts published by current pipeline
+        artifact: 'petclinic_$(Build.BuildNumber).war'
+        patterns: '**/.war'  
+      - deployment: DevDeploy
+        displayName: Deploy War to DevServers
+        environment: 
+          name: Dev
+          resourceType: VirtualMachine
+          tags: web,dev # only deploy to virtual machines with both windows and prod tags
+        strategy:
+          runOnce:
+          deploy:   
+              steps:
+                - script: |
+                    echo "Pipeline workspace is $(Pipeline.Workspace)"                    
+                    echo "Artifacts directlry is $(System.ArtifactsDirectory)"
+                    ls -l $(System.ArtifactsDirectory)
+                    echo "Current dir is $(pwd)"
+                    ls -l 
+
+
