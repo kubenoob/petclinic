@@ -22,35 +22,45 @@ stages:
         env:
           buildNumber: $(Build.BuildNumber)
           buildDir: $(Pipeline.Workspace) 
-      - task: PublishPipelineArtifact@1
-        displayName: 'Publish Pipeline Artifact'
+      - task: CopyFiles@2
+        displayName: 'Copy Files to artifact directory'
         inputs:
-          targetPath: '$(Pipeline.Workspace)/s/target/petclinic.war '
-          artifact: 'petclinic_$(Build.BuildNumber).war'
+          SourceFolder: '$(System.DefaultWorkingDirectory)'
+          Contents: '**/target/*.?(war|jar)'
+          TargetFolder: $(Build.ArtifactStagingDirectory)
+      - upload: $(Build.ArtifactStagingDirectory)
+        artifact: petclinic
     
   - stage: deployToDev
     pool:
       name: CloudopsPool      
     condition: succeeded()
-    jobs:
-      - download: current  # refers to artifacts published by current pipeline
-        artifact: 'petclinic_$(Build.BuildNumber).war'
-        patterns: '**/.war'  
-      - deployment: DevDeploy
-        displayName: Deploy War to DevServers
-        environment: 
-          name: Dev
+    jobs: 
+      - deployment: VMDeploy
+        displayName: Deploy to Dev Web
+        environment:
+          name: CloudOpsDev
           resourceType: VirtualMachine
-          tags: web,dev # only deploy to virtual machines with both windows and prod tags
         strategy:
-          runOnce:
-          deploy:   
-              steps:
-                - script: |
-                    echo "Pipeline workspace is $(Pipeline.Workspace)"                    
-                    echo "Artifacts directlry is $(System.ArtifactsDirectory)"
-                    ls -l $(System.ArtifactsDirectory)
-                    echo "Current dir is $(pwd)"
-                    ls -l 
-
+            rolling:
+              maxParallel: 2  #for percentages, mention as x%
+              preDeploy:
+                steps:
+                - download: current
+                  artifact: petclinic
+                - script: echo initialize, cleanup, backup, install certs
+              deploy:
+                steps:
+                - task: Bash@3
+                  inputs:
+                    targetType: 'inline'
+                    script: |
+                      echo "Pipeline workspace is $(Pipeline.Workspace)"                    
+                      echo "Artifacts directlry is $(System.ArtifactsDirectory)"
+                      ls -l $(System.ArtifactsDirectory)
+                      echo "Current dir is $(pwd)"
+                      ls -l 
+                      # Modify deployment script based on the app type
+                      echo "Starting deployment script run"
+                      sudo cp '$(Pipeline.Workspace)/petclinic/**/target/*.war /opt/tomcat/webapps/petclinic.war 
 
