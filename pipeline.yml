@@ -47,7 +47,7 @@ stages:
               steps:
               - download: current
                 artifact: petclinic
-              - script: Starting Deploymnet
+              - script: echo "Starting Deployment"
             deploy:
               steps:
               - task: Bash@3
