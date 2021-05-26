@@ -47,7 +47,7 @@ stages:
               steps:
               - download: current
                 artifact: petclinic
-              - script: echo initialize, cleanup, backup, install certs
+              - script: Starting Deploymnet
             deploy:
               steps:
               - task: Bash@3
@@ -61,5 +61,5 @@ stages:
                     ls -l 
                     # Modify deployment script based on the app type
                     echo "Starting deployment script run"
-                    sudo cp $(Pipeline.Workspace)/petclinic/**/target/*.war /opt/tomcat/webapps/petclinic.war 
+                    sudo cp $(Pipeline.Workspace)/petclinic/target/*.war /opt/tomcat/webapps/petclinic.war 
 
