@@ -13,7 +13,7 @@ stages:
       workspace:
         clean: all
       pool:
-        name: CloudopsPool
+        name: Victory
       steps:    
       - task: Bash@3
         inputs:
@@ -33,13 +33,13 @@ stages:
     
   - stage: deployToDev
     pool:
-      name: CloudopsPool      
+      name: Victory      
     condition: succeeded()
     jobs: 
       - deployment: VMDeploy
         displayName: Deploy to Dev Web
         environment:
-          name: CloudOpsDev
+          name: VictoryDev
           resourceType: VirtualMachine
         strategy:
           runOnce:            
