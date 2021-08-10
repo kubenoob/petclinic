@@ -6,7 +6,7 @@ variables:
   - name: AZSUBSCRIPTION  
     value: AzCloud
   - name: Deploy
-    value: false  
+    value: true  
   - name: AgentPool
     value: Victory
   - name: DeployEnvironment
