@@ -3,10 +3,14 @@
 # This script runs build job and saves the artifact to local folder.
 
 
+sudo apt-get update 
+sudo apt-get install maven -y
+
 echo $buildNumber
 echo $buildDir
 artifactsPath="/home/azadmin/agent/artifacts"
 
+mkdir -p $artifactsPath
 # Compiling the Appliction with Maven.
 mvn package     
 
