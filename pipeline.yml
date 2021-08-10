@@ -4,16 +4,22 @@ trigger:
 
 variables:
   - name: AZSUBSCRIPTION  
-    value: AZDOManaged
+    value: AzCloud
+  - name: Deploy
+    value: false  
+  - name: AgentPool
+    value: Victory
+  - name: DeployEnvironment
+    value: VictoryDev  
 stages:
-  - stage: AppBuild 
+  - stage: BuildApp 
     condition: always()
     jobs:
     - job: BuildWar    
       workspace:
         clean: all
       pool:
-        name: CloudopsPool
+        name: $(AgentPool)
       steps:    
       - task: Bash@3
         inputs:
@@ -33,13 +39,13 @@ stages:
     
   - stage: deployToDev
     pool:
-      name: CloudopsPool      
-    condition: succeeded()
+      name: $(AgentPool)      
+    condition: and(succeeded(), eq(variables.Deploy, 'true'))
     jobs: 
       - deployment: VMDeploy
         displayName: Deploy to Dev Web
         environment:
-          name: CloudOpsDev
+          name: $(DeployEnvironment)
           resourceType: VirtualMachine
         strategy:
           runOnce:            
@@ -54,7 +60,8 @@ stages:
                 inputs:
                   targetType: 'inline'
                   script: |
-                   # Modify deployment script based on the app type
+
+                    # Modify deployment script based on the app type
                     echo "Starting deployment script run"
                     sudo cp $(Pipeline.Workspace)/petclinic/target/*.war /opt/tomcat/webapps/petclinic.war 
 
