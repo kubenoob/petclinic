@@ -1,6 +1,7 @@
 trigger: 
   - main
   - feature*
+  - dev
 
 variables:
   - name: AZSUBSCRIPTION  
@@ -10,7 +11,7 @@ variables:
   - name: AgentPool
     value: Victory
   - name: DeployEnvironment
-    value: VictoryDev  
+    value: Dev  
 stages:
   - stage: BuildApp 
     condition: always()
@@ -57,6 +58,7 @@ stages:
             deploy:
               steps:
               - task: Bash@3
+                displayName: CopyWar
                 inputs:
                   targetType: 'inline'
                   script: |
