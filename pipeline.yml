@@ -1,6 +1,6 @@
 trigger: 
   - main
-  - feature*
+  - feature-123*
 
 variables:
   - name: AZSUBSCRIPTION  
