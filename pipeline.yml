@@ -8,9 +8,9 @@ variables:
   - name: Deploy
     value: true  
   - name: AgentPool
-    value: Victory
+    value: SelfHosted
   - name: DeployEnvironment
-    value: Dev  
+    value: CIT-Dev  
 stages:
   - stage: BuildApp 
     condition: always()
