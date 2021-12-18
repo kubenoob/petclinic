@@ -10,7 +10,7 @@ variables:
   - name: AgentPool
     value: SelfHosted
   - name: DeployEnvironment
-    value: CIT-Dev  
+    value: kops-dev-web  
 stages:
   - stage: BuildApp 
     condition: always()
