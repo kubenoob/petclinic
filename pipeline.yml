@@ -1,10 +1,10 @@
 trigger: 
   - main
-  - feature-123*
+  - feature*
 
 variables:
   - name: AZSUBSCRIPTION  
-    value: AzCloud
+    value: MyCloud
   - name: Deploy
     value: true  
   - name: AgentPool
