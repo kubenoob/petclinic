@@ -64,5 +64,5 @@ stages:
 
                     # Modify deployment script based on the app type
                     echo "Starting deployment script run"
-                    sudo cp $(Pipeline.Workspace)/petclinic/target/*.war /opt/tomcat/webapps/petclinic.war 
+                    sudo cp -f $(Pipeline.Workspace)/petclinic/target/*.war /opt/tomcat/webapps/petclinic.war 
 
