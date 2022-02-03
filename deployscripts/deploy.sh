@@ -3,10 +3,13 @@
 
 #Get the location of latest war file
 
-warfilePath=$(realpath $(ls -Art *.war | tail -n 1))
+warfile=$(ls -Art /home/ubuntu/artifacts/*.war | tail -n 1)
+warfilePath=$(realpath $warfile)
+
+echo $warfilePath
 
 # Replace the path in vars.yaml
-sed -i s,\#warfilePath\#,$warfilePath,g deployscripts/vars.yaml
+sed -i "s,\#warfilePath\#,$warfilePath,g" deployscripts/vars.yaml
 
 tag="cit-web*"
 
