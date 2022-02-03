@@ -7,17 +7,19 @@ echo $WORKSPACE
 artifactsPath="/home/ubuntu/artifacts"
 
 
-ls -l $WORKSPACE/$JOB_NAME/
 
-ls -l $WORKSPACE/$JOB_NAME/target/*.war
-
-ls -l **/*.war 
 
 
 
 sudo mkdir -p $artifactsPath
+sudo cp $WORKSPACE/target/*.war $artifactsPath/petclinic_$BUILD_NUMBER.war
 
-cp ** 
+
+ls -l $WORKSPACE/target/*.war
+
+ls -l **/*.war 
+
+
 
 # Compiling the Appliction with Maven.
 # mvn package     
