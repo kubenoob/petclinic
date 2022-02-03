@@ -9,6 +9,6 @@
   tasks:
   - name: copy war file to web servers
     copy: 
-      src: '{{ warFilePath }}'
+      src: $buildDir/s/target/petclinic.war
       dest: /opt/tomcat/webapps/petclinic.war    
     
