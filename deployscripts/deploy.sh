@@ -3,10 +3,10 @@
 
 #Get the location of latest war file
 
-warfilePath=$(realpath $(ls -Art | tail -n 1))
+warfilePath=$(realpath $(ls -Art *.war | tail -n 1))
 
 # Replace the path in vars.yaml
-sed -i s,\#warfilePath\#,$warfilePath,g vars.yaml
+sed -i s,\#warfilePath\#,$warfilePath,g deployscripts/vars.yaml
 
 tag="cit-web*"
 
