@@ -7,15 +7,20 @@ echo $WORKSPACE
 artifactsPath="/home/ubuntu/artifacts"
 
 
-ls -l $WORKSPACE/*
+ls -l $WORKSPACE/JOB_NAME/
+
+ls -l $WORKSPACE/JOB_NAME/target/*.war
+
+ls -l **/*.war 
+
+
 
 sudo mkdir -p $artifactsPath
-sudo chown ubuntu.ubuntu -R $artifactsPath
-sudo chmod u+s -R $artifactsPath
-sudo chmod g+s -R $artifactsPath
+
+cp ** 
 
 # Compiling the Appliction with Maven.
-mvn package     
+# mvn package     
 
 
 
