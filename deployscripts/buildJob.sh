@@ -7,7 +7,7 @@ echo $buildDir
 artifactsPath="/home/ubuntu/artifacts"
 
 sudo mkdir -p $artifactsPath
-sudo chown -R $artifactsPath
+sudo chown ubuntu.ubuntu -R $artifactsPath
 sudo chmod u+s -R $artifactsPath
 sudo chmod g+s -R $artifactsPath
 
