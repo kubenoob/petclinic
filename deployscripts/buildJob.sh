@@ -7,9 +7,9 @@ echo $WORKSPACE
 artifactsPath="/home/ubuntu/artifacts"
 
 
-ls -l $WORKSPACE/JOB_NAME/
+ls -l $WORKSPACE/$JOB_NAME/
 
-ls -l $WORKSPACE/JOB_NAME/target/*.war
+ls -l $WORKSPACE/$JOB_NAME/target/*.war
 
 ls -l **/*.war 
 
