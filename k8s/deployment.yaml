@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: petclinicdeploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: springapp
+  template:
+    metadata:
+      labels:
+        app: springapp
+    spec:
+      containers:
+      - name: web
+        image: kbaddi/ngibaddx:1.0
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "150m"
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80    
+      - name: petclinic
+        image: kbaddi/petclinic:1.0
+        env:
+          - name: jdbc.username
+            value: 'sa'
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "250m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:  
+            path: /
+            port: 8080
+          initialDelaySeconds: 45
+          timeoutSeconds: 25
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 45
+          timeoutSeconds: 25
+        ports:
+        - containerPort: 8080
+      imagePullSecrets:
+        - name:  regcred  
+
+        
