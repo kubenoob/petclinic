@@ -17,10 +17,10 @@ spec:
         image: kbaddi/ngibaddx:1.0
         resources:
           requests:
-            memory: "128Mi"
+            memory: "400Mi"
             cpu: "100m"
           limits:
-            memory: "256Mi"
+            memory: "600Mi"
             cpu: "150m"
         imagePullPolicy: Always
         ports:
