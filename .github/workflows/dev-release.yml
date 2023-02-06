@@ -30,7 +30,7 @@ jobs:
 
       - uses: actions/upload-artifact@v3
         with:
-          name: petclinic_${{ GITHUB_RUN_NUMBER }}.war
+          name: petclinic_${{ github.run_number }}.war
       - name: Publish to Artifactory
         run: echo $ARTIFACTORTY_curl -H ${{ secrets.ARTIFACTORY_SECRET }} -T **/petclinic*.war ${{ vars.KJ_ARTIFACTORY_URL }}
 
