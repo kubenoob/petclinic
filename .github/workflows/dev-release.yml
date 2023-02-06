@@ -18,7 +18,6 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 18
-
       - name: Cache the Maven packages to speed up build
         uses: actions/cache@v1
         with:
@@ -33,7 +32,5 @@ jobs:
         with:
           name: petclinic_${{ GITHUB_RUN_NUMBER }}.war
       - name: Publish to Artifactory
-        # env:
-        #   ARTIFACTORY_URL: ${{ vars.KJ_ARTIFACTORY_URL }}
         run: echo $ARTIFACTORTY_curl -H ${{ secrets.ARTIFACTORY_SECRET }} -T **/petclinic*.war ${{ vars.KJ_ARTIFACTORY_URL }}
 
