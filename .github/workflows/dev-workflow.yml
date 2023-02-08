@@ -28,9 +28,9 @@ jobs:
       - name: Build with maven
         run: mvn clean package
 
-      # - uses: actions/upload-artifact@v3
-      #   with:
-      #     name: petclinic_${{ github.run_number }}.war
-      - name: Publish to Artifactory
-        run: echo $ARTIFACTORTY_curl -H ${{ secrets.ARTIFACTORY_SECRET }} -T **/petclinic*.war ${{ vars.KJ_ARTIFACTORY_URL }}/petclinic_${{ github.run_number }}
-
+      - name: Upload Artifacts
+        id: upload_artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: petclinic_${{ github.run_number}}.war
+          path: target/petclinic.war
