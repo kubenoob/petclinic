@@ -1,13 +1,10 @@
 name: SpringApp CI-CD
-run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+run-name: Build & Deploy Springboot App  🚀
 on: 
   push:
     branches:
       - "development"
       
-  pull_request:
-    branches: 
-      - "development"
 
 jobs:
   buildApp:
