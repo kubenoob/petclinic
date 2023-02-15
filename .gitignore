@@ -10,3 +10,8 @@ bin/
 
 # Maven
 target/
+
+
+# Docker local
+Dockerfile_local
+*_local
