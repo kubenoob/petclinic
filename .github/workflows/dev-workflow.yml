@@ -48,11 +48,12 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - run: pwd && ls -l  
-     # Build & Push docekr iamge
-      - name: Build and push
-        uses: docker/build-push-action@v4
+      - run: docker build . -t kbaddi/petclinic:${{ github.run_number }}
+    #  # Build & Push docker iamge
+    #   - name: Build and push
+    #     uses: docker/build-push-action@v4
         
-        with:
-          push: true
-          tags: kbaddi/petclinic:${{github.run_number}}
-          no-cache: true
+    #     with:
+    #       push: true
+    #       tags: kbaddi/petclinic:${{github.run_number}}
+    #       no-cache: true
